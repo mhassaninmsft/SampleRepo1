@@ -8,7 +8,7 @@ provider "azurerm" {
 }
 
 locals {
-  build_id = "1235"
+  build_id = "1237"
 }
 
 data "azurerm_client_config" "current" {}
