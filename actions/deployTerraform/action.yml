@@ -30,6 +30,7 @@ outputs:
     description: "Random number"
     value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
+  working-directory: ./deploy/terraform
   using: "composite"
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
