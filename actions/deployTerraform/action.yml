@@ -21,10 +21,10 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
-  # who-to-greet:  # id of input
-  #   description: 'Who to greet'
-  #   required: true
-  #   default: 'World'
+  GITHUB_TOKEN:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
 outputs:
   random-number:
     description: "Random number"
@@ -57,6 +57,7 @@ runs:
       run: terraform fmt -check
 
     - name: Terraform Init
+      shell: bash
       id: init
       run: terraform init --backend-config=backend.tfvars1
 
@@ -67,21 +68,24 @@ runs:
     #     who-to-greet: 'Mohamed'
 
     - name: Terraform Validate
+      shell: bash
       id: validate
       run: terraform validate -no-color
 
     - name: Terraform Plan
+      shell: bash
       id: plan
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color -input=false
       continue-on-error: true
 
     - uses: actions/github-script@v6
+      shell: bash
       if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
           const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
@@ -106,9 +110,11 @@ runs:
           })
 
     - name: Terraform Plan Status
+      shell: bash
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
     - name: Terraform Apply
+      shell: bash
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
