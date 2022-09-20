@@ -23,5 +23,5 @@ runs:
       shell: bash
     - run: ls -la
       shell: bash
-    - run: ./goodbye.sh
+    - run: ./actions/greet/goodbye.sh
       shell: bash
