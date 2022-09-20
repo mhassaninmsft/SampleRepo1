@@ -39,7 +39,7 @@ jobs:
         run: terraform init --backend-config=backend.tfvars1
 
       - name: Composite Action 1
-        uses: actions/SampleRepo1@v1
+        uses: mhassaninmsft/SampleRepo1@v1
         with:
           who-to-greet: 'Mohamed'
 
