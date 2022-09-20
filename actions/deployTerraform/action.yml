@@ -1,22 +1,22 @@
 name: 'deploy Terraform'
 description: 'deploy Terraform '
 inputs:
-  ARM_CLIENT_ID:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-  ARM_CLIENT_SECRET:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-  ARM_SUBSCRIPTION_ID:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-  ARM_TENANT_ID:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
+  # ARM_CLIENT_ID:  # id of input
+  #   description: 'Who to greet'
+  #   required: true
+  #   default: 'World'
+  # ARM_CLIENT_SECRET:  # id of input
+  #   description: 'Who to greet'
+  #   required: true
+  #   default: 'World'
+  # ARM_SUBSCRIPTION_ID:  # id of input
+  #   description: 'Who to greet'
+  #   required: true
+  #   default: 'World'
+  # ARM_TENANT_ID:  # id of input
+  #   description: 'Who to greet'
+  #   required: true
+  #   default: 'World'
   who-to-greet:  # id of input
     description: 'Who to greet'
     required: true
@@ -30,7 +30,7 @@ outputs:
     description: "Random number"
     value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
-  working-directory: ./deploy/terraform
+  # working-directory: ./deploy/terraform
   using: "composite"
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
@@ -39,6 +39,8 @@ runs:
       run: echo "::set-output name=random-number::$(echo $RANDOM)"
       shell: bash
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+    - run: cd ./deploy/terraform
       shell: bash
     - run: pwd
       shell: bash
