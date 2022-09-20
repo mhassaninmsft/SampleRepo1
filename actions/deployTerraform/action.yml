@@ -55,11 +55,13 @@ runs:
 
     - name: Terraform Format
       shell: bash
+      working-directory: ./deploy/terraform
       id: fmt
       run: terraform fmt -check
 
     - name: Terraform Init
       shell: bash
+      working-directory: ./deploy/terraform
       id: init
       run: terraform init --backend-config=backend.tfvars1
 
@@ -71,11 +73,13 @@ runs:
 
     - name: Terraform Validate
       shell: bash
+      working-directory: ./deploy/terraform
       id: validate
       run: terraform validate -no-color
 
     - name: Terraform Plan
       shell: bash
+      working-directory: ./deploy/terraform
       id: plan
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color -input=false
@@ -83,6 +87,7 @@ runs:
 
     - uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
+      working-directory: ./deploy/terraform
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
@@ -112,10 +117,12 @@ runs:
 
     - name: Terraform Plan Status
       shell: bash
+      working-directory: ./deploy/terraform
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
     - name: Terraform Apply
       shell: bash
+      working-directory: ./deploy/terraform
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false

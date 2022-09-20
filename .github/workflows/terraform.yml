@@ -26,7 +26,6 @@ jobs:
 
       - name: Deploy Terraform Dev Enviornment
         uses: ./actions/deployTerraform
-        working-directory: ./deploy/terraform
         # uses: mhassaninmsft/SampleRepo1@v1
         with:
           who-to-greet: 'Mohamed'
