@@ -38,6 +38,11 @@ jobs:
         id: init
         run: terraform init --backend-config=backend.tfvars1
 
+      - name: Composite Action 1
+        uses: actions/SampleRepo1@v1
+        with:
+          who-to-greet: 'Mohamed'
+
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
