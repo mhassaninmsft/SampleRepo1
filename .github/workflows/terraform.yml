@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy Terraform Dev Enviornment
-        uses: ./actions/greet
+        uses: ./actions/deployTerraform
         # uses: mhassaninmsft/SampleRepo1@v1
         with:
           who-to-greet: 'Mohamed'
