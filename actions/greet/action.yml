@@ -21,5 +21,7 @@ runs:
       shell: bash
     - run: pwd
       shell: bash
+    - run: ls -la
+      shell: bash
     - run: ./goodbye.sh
       shell: bash
