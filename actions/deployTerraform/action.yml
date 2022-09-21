@@ -44,13 +44,6 @@ runs:
       shell: bash
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
-    - id: Download-file
-      shell: bash
-      working-directory: ./deploy/terraform
-      run: |
-        touch backend.tfvars
-        printf "${{ inputs.TFVARS_CONTENT }}" >>  backend.tfvars
-        cat backend.tfvars
 
     - run: pwd
       shell: bash
@@ -64,6 +57,16 @@ runs:
       # with:
       #   # terraform_version: 0.13.0:
       #   cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - id: Download-file
+      shell: bash
+      working-directory: ./deploy/terraform
+      run: |
+        ls -la
+        pwd
+        touch backend.tfvars
+        printf "${{ inputs.TFVARS_CONTENT }}" >>  backend.tfvars
+        cat backend.tfvars
 
     - name: Terraform Format
       shell: bash
