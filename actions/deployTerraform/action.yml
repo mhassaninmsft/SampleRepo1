@@ -65,7 +65,7 @@ runs:
         ls -la
         pwd
         touch backend.tfvars
-        printf "${{ inputs.TFVARS_CONTENT }} \t\n" >>  backend.tfvars
+        printf "${{ inputs.TFVARS_CONTENT }}\n" >>  backend.tfvars
         printf "\n" >>backend.tfvars
         cat backend.tfvars
 
