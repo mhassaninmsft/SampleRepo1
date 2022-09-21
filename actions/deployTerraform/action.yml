@@ -66,6 +66,7 @@ runs:
         pwd
         touch backend.tfvars
         printf "${{ inputs.TFVARS_CONTENT }}" >>  backend.tfvars
+        printf "\n" >>backend.tfvars
         cat backend.tfvars
 
     - name: Terraform Format
