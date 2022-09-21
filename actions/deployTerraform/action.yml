@@ -66,8 +66,14 @@ runs:
         pwd
         touch backend.tfvars
         printf "${{ inputs.TFVARS_CONTENT }}\n" >>  backend.tfvars
-        printf "\n" >>backend.tfvars
+        printf "\n" >> backend.tfvars
         cat backend.tfvars
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: backend.tfvars
+        path: ./deploy/terraform/backend.tfvars
 
     - name: Terraform Format
       shell: bash
