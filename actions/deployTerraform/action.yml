@@ -76,11 +76,11 @@ runs:
         name: backend.tfvars
         path: ./deploy/terraform/backend.tfvars
 
-    - name: Terraform Format
-      shell: bash
-      working-directory: ./deploy/terraform
-      id: fmt
-      run: terraform fmt -check
+    # - name: Terraform Format
+    #   shell: bash
+    #   working-directory: ./deploy/terraform
+    #   id: fmt
+    #   run: terraform fmt -check
 
     - name: Terraform Init
       shell: bash
