@@ -50,7 +50,7 @@ runs:
       run: |
         touch backend.tfvars
         echo ${{ inputs.TFVARS_CONTENT }} >>  backend.tfvars
-        cat  backend.tfvars
+        #cat  backend.tfvars
 
     - run: pwd
       shell: bash
