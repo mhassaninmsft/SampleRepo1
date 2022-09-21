@@ -21,6 +21,10 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
+  TFVARS_CONTENT:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
   GITHUB_TOKEN:  # id of input
     description: 'Who to greet'
     required: true
@@ -40,6 +44,14 @@ runs:
       shell: bash
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
+    - id: Download-file
+      shell: bash
+      working-directory: ./deploy/terraform
+      run: |
+      touch backend.tfvars
+      echo ${{secrets.BACKEND_TFVARS}} >>  backend.tfvars
+      cat  backend.tfvars
+
     - run: pwd
       shell: bash
     - run: ls -la
@@ -63,7 +75,7 @@ runs:
       shell: bash
       working-directory: ./deploy/terraform
       id: init
-      run: terraform init --backend-config=backend.tfvars1
+      run: terraform init --backend-config=backend.tfvars
 
     # - name: Composite Action 1
     #   uses: ./actions/greet
