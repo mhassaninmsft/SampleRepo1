@@ -31,3 +31,4 @@ jobs:
         with:
           who-to-greet: 'Mohamed'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TFVARS_CONTENT: ${{ secrets.BACKEND_TFVARS }}
