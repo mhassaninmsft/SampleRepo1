@@ -49,8 +49,7 @@ runs:
       working-directory: ./deploy/terraform
       run: |
         touch backend.tfvars
-        echo ${{ inputs.TFVARS_CONTENT }} >>  backend.tfvars
-        #cat  backend.tfvars
+        echo ${{ inputs.TFVARS_CONTENT }} >  backend.tfvars
 
     - run: pwd
       shell: bash
