@@ -58,20 +58,37 @@ runs:
       #   # terraform_version: 0.13.0:
       #   cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - id: Download-file
-      shell: bash
-      working-directory: ./deploy/terraform
-      run: |
-        ls -la
-        pwd
-        touch backend.tfvars
-        # echo "${{ inputs.TFVARS_CONTENT }}"
-        # printf "${{ inputs.TFVARS_CONTENT }}\n" >>  backend.tfvars
-        # printf "\n" >> backend.tfvars
-        cat << EOF > backend.tfvars
-        ${{ inputs.TFVARS_CONTENT }}
-        EOF
-        cat backend.tfvars
+    # - id: Download-file
+    #   shell: bash
+    #   working-directory: ./deploy/terraform
+    #   run: |
+    #     ls -la
+    #     pwd
+    #     touch backend.tfvars
+    #     echo "${{ inputs.TFVARS_CONTENT }}"
+    #     printf "${{ inputs.TFVARS_CONTENT }}\n" >>  backend.tfvars
+    #     printf "\n" >> backend.tfvars
+    #     cat backend.tfvars
+
+    - name: Output current branch name & date
+      # To use latest action, specify "release-master" instead of "v0.0.2"
+        uses: satackey/action-js-inline@v0.0.2
+        id: getdata
+        working-directory: ./deploy/terraform
+        env:
+          TFVARS: ${{inputs.TFVARS_CONTENT}}
+        with:
+          # Edit the following line to install packages required to run your script.
+          required-packages: axios
+          script: |
+            const core = require('@actions/core')
+            const axios = require('axios')
+            const fs = require('fs');
+            console.log(` result is ${process.env.TFVARS}`);
+            fs.writeFileSync('./backend.tfvars', process.env.TFVARS);
+            const buffer = fs.readFileSync("./backend.tfvars");
+            const fileContent = buffer.toString();
+            console.log(fileContent);
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v3
@@ -79,11 +96,11 @@ runs:
         name: backend.tfvars
         path: ./deploy/terraform/backend.tfvars
 
-    # - name: Terraform Format
-    #   shell: bash
-    #   working-directory: ./deploy/terraform
-    #   id: fmt
-    #   run: terraform fmt -check
+    - name: Terraform Format
+      shell: bash
+      working-directory: ./deploy/terraform
+      id: fmt
+      run: terraform fmt -check
 
     - name: Terraform Init
       shell: bash
