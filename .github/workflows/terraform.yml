@@ -47,6 +47,12 @@ jobs:
             const fileContent = buffer.toString();
             console.log(fileContent);
 
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: data2.txt
+          path: ./data.txt
+
       - name: Deploy Terraform Dev Enviornment
         uses: ./actions/deployTerraform
         # uses: mhassaninmsft/SampleRepo1@v1
