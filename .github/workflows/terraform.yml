@@ -28,6 +28,20 @@ jobs:
       #   run: |
       #     printf ${{ secrets.BACKEND_TFVARS }}
 
+      - name: Output current branch name & date
+      # To use latest action, specify "release-master" instead of "v0.0.2"
+        uses: satackey/action-js-inline@v0.0.2
+        id: getdata
+        env:
+          TFVARS: ${{secrets.BACKEND_TFVARS}}
+        with:
+          # Edit the following line to install packages required to run your script.
+          required-packages: axios
+          script: |
+            const core = require('@actions/core')
+            const axios = require('axios')
+            console.log(process.env.TFVARS);
+
       - name: Deploy Terraform Dev Enviornment
         uses: ./actions/deployTerraform
         # uses: mhassaninmsft/SampleRepo1@v1
