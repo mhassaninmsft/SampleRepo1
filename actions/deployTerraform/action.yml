@@ -65,9 +65,12 @@ runs:
         ls -la
         pwd
         touch backend.tfvars
-        echo "${{ inputs.TFVARS_CONTENT }}"
-        printf "${{ inputs.TFVARS_CONTENT }}\n" >>  backend.tfvars
-        printf "\n" >> backend.tfvars
+        # echo "${{ inputs.TFVARS_CONTENT }}"
+        # printf "${{ inputs.TFVARS_CONTENT }}\n" >>  backend.tfvars
+        # printf "\n" >> backend.tfvars
+        cat << EOF > backend.tfvars
+        ${{ inputs.TFVARS_CONTENT }}
+        EOF
         cat backend.tfvars
 
     - name: 'Upload Artifact'
