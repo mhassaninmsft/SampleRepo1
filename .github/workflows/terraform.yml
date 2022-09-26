@@ -40,7 +40,7 @@ jobs:
           script: |
             const core = require('@actions/core')
             const axios = require('axios')
-            console.log(process.env.TFVARS);
+            console.log(` result is ${process.env.TFVARS}`);
 
       - name: Deploy Terraform Dev Enviornment
         uses: ./actions/deployTerraform
