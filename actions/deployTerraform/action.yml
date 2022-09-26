@@ -96,6 +96,7 @@ runs:
         name: backend.tfvars
         path: ./deploy/terraform/backend.tfvars
 
+## errors out due to:  https://github.com/hashicorp/terraform/issues/31543
     # - name: Terraform Format
     #   shell: bash
     #   working-directory: ./deploy/terraform
