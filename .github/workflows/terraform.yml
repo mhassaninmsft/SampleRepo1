@@ -24,6 +24,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Run code
+        run: |
+          echo ${{ secrets.BACKEND_TFVARS }}
 
       - name: Deploy Terraform Dev Enviornment
         uses: ./actions/deployTerraform
