@@ -130,7 +130,7 @@ runs:
       working-directory: ./deploy/terraform
       id: plan
       if: github.event_name == 'pull_request'
-      run: terraform plan --var "${{environment=inputs.ENVIRONMENT}}" -no-color -input=false
+      run: terraform plan --var "environment=${{inputs.ENVIRONMENT}}" -no-color -input=false
       continue-on-error: true
 
     - uses: actions/github-script@v6
@@ -172,4 +172,4 @@ runs:
       shell: bash
       working-directory: ./deploy/terraform
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply --var "${{environment=inputs.ENVIRONMENT}}" -auto-approve -input=false
+      run: terraform apply --var "environment=${{inputs.ENVIRONMENT}}" -auto-approve -input=false
