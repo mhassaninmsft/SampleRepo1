@@ -182,7 +182,7 @@ runs:
     - name: Run Tests
       working-directory: ./deploy/test
       shell: bash
-      run: go test -v -timeout 8000s ./test.go 2>&1 | go-junit-report >test.xml
+      run: go test -v -timeout 8000s test.go 2>&1 | go-junit-report >test.xml
       
     - uses: actions/upload-artifact@v3
       if: always()
