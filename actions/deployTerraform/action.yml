@@ -184,6 +184,7 @@ runs:
       shell: bash
       run: |
         go install github.com/jstemmer/go-junit-report@latest
+        go mod init
         go test -v test.go 
       
     - uses: actions/upload-artifact@v3
@@ -191,3 +192,5 @@ runs:
       with:
         name: Test results
         path: .deploy/test/*.xml
+
+        # 2>&1 | go-junit-report > test.xml
