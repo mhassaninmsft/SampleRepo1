@@ -197,6 +197,6 @@ runs:
       if: success() || failure()
       with:
         name: Test results
-        path: .deploy/test/*.xml
+        path: .deploy/test/terraform/*.xml
 
         # 2>&1 | go-junit-report > test.xml
