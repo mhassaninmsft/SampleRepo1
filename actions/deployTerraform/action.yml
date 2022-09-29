@@ -183,8 +183,8 @@ runs:
       working-directory: ./deploy/test
       shell: bash
       run: |
-      go install github.com/jstemmer/go-junit-report@latest
-      go test -v -timeout 8000s test.go 2>&1 | go-junit-report > test.xml
+        go install github.com/jstemmer/go-junit-report@latest
+        go test -v test.go 
       
     - uses: actions/upload-artifact@v3
       if: success() || failure()
