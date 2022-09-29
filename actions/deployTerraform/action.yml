@@ -191,7 +191,7 @@ runs:
       shell: bash
       run: |
         go get github.com/stretchr/testify/assert
-        go test -v test.go 
+        go test -v test.go 2>&1 | go-junit-report > test.xml
       
     - uses: actions/upload-artifact@v3
       if: success() || failure()
