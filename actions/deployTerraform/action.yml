@@ -189,7 +189,9 @@ runs:
     - name: Run Tests
       working-directory: ./deploy/test/terraform
       shell: bash
-      run: go test -v test.go 
+      run: |
+        go get github.com/stretchr/testify/assert
+        go test -v test.go 
       
     - uses: actions/upload-artifact@v3
       if: success() || failure()
