@@ -1,4 +1,4 @@
-package main 
+package terraform 
 
 import (
 	"testing"
