@@ -13,8 +13,13 @@ env:
   DOTNET_VERSION: '6.0.401'              # set this to the dotnet version to use
 jobs:
   dev-build-and-deploy:
+    strategy:
+      max-parallel: 1
+      matrix:
+        environment: [dev, test, prod]
     runs-on: windows-latest
-    environment: dev
+    environment: ${{ matrix.environment }}
+    name: ${{ matrix.environment }}-build-and-deploy
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@master
