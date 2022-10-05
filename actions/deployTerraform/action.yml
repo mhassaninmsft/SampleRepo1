@@ -174,7 +174,6 @@ runs:
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply --var "environment=${{inputs.ENVIRONMENT}}" -auto-approve -input=false
 
-
     - name: Install Go
       uses: actions/setup-go@v3
       with: 
