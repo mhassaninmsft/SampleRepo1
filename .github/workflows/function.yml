@@ -35,9 +35,11 @@ jobs:
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
-    - name: 'Run Azure Functions Action'
+    # Only publish App if this is a merge
+    - name: 'Publish Azure Functions'
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       uses: Azure/functions-action@v1
-      id: fa
+      id: pubAzureFunction
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'

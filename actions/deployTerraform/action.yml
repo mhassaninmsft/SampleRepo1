@@ -1,34 +1,30 @@
 name: 'deploy Terraform'
 description: 'deploy Terraform '
 inputs:
+# TODO: In case there are needs for different environments to use different service principals, make those environment variables parameters
+# TODO: to this script
   # ARM_CLIENT_ID:  # id of input
-  #   description: 'Who to greet'
+  #   description: 'SP client Id'
   #   required: true
   #   default: 'World'
   # ARM_CLIENT_SECRET:  # id of input
-  #   description: 'Who to greet'
+  #   description: 'Sp Client Secret'
   #   required: true
   #   default: 'World'
   # ARM_SUBSCRIPTION_ID:  # id of input
-  #   description: 'Who to greet'
+  #   description: 'Subscription Id'
   #   required: true
   #   default: 'World'
   # ARM_TENANT_ID:  # id of input
-  #   description: 'Who to greet'
+  #   description: 'Tenant Id'
   #   required: true
   #   default: 'World'
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
   TFVARS_CONTENT:  # id of input
     description: 'Who to greet'
     required: true
-    default: 'World'
   GITHUB_TOKEN:  # id of input
     description: 'Who to greet'
     required: true
-    default: 'World'
   ENVIRONMENT:  # id of input
     description: 'Who to greet'
     required: true
@@ -38,21 +34,12 @@ outputs:
     description: "Random number"
     value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
-  # working-directory: ./deploy/terraform
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
     - id: random-number-generator
       run: echo "::set-output name=random-number::$(echo $RANDOM)"
       shell: bash
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
 
-    - run: pwd
-      shell: bash
-    - run: ls -la
-      shell: bash
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -62,23 +49,9 @@ runs:
       #   # terraform_version: 0.13.0:
       #   cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # - id: Download-file
-    #   shell: bash
-    #   working-directory: ./deploy/terraform
-    #   run: |
-    #     ls -la
-    #     pwd
-    #     touch backend.tfvars
-    #     echo "${{ inputs.TFVARS_CONTENT }}"
-    #     printf "${{ inputs.TFVARS_CONTENT }}\n" >>  backend.tfvars
-    #     printf "\n" >> backend.tfvars
-    #     cat backend.tfvars
-
-    - name: Output current branch name & date
-      # To use latest action, specify "release-master" instead of "v0.0.2"
+    - name: Write TF Vars file to disk
       uses: satackey/action-js-inline@v0.0.2
       id: getdata
-      # working-directory: ./deploy/terraform
       env:
         TFVARS: ${{inputs.TFVARS_CONTENT}}
       with:
@@ -88,18 +61,15 @@ runs:
           const core = require('@actions/core')
           const axios = require('axios')
           const fs = require('fs');
-          console.log(` result is ${process.env.TFVARS}`);
           fs.writeFileSync('./deploy/terraform/backend.tfvars', process.env.TFVARS);
-          const buffer = fs.readFileSync("./deploy/terraform/backend.tfvars");
-          const fileContent = buffer.toString();
-          console.log(fileContent);
 
-    - name: 'Upload Artifact'
+    - name: 'Upload TF Vars File'
       uses: actions/upload-artifact@v3
       with:
         name: backend.tfvars
         path: ./deploy/terraform/backend.tfvars
 
+#TODO: investigate below errors
 ## errors out due to:  https://github.com/hashicorp/terraform/issues/31543
     # - name: Terraform Format
     #   shell: bash
@@ -112,12 +82,6 @@ runs:
       working-directory: ./deploy/terraform
       id: init
       run: terraform init --backend-config=backend.tfvars
-
-    # - name: Composite Action 1
-    #   uses: ./actions/greet
-    #   # uses: mhassaninmsft/SampleRepo1@v1
-    #   with:
-    #     who-to-greet: 'Mohamed'
 
     - name: Terraform Validate
       shell: bash
@@ -133,7 +97,8 @@ runs:
       run: terraform plan --var "environment=${{inputs.ENVIRONMENT}}" -no-color -input=false
       continue-on-error: true
 
-    - uses: actions/github-script@v6
+    - name: Comment on PR with terraform plan output
+      uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
