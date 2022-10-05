@@ -3,7 +3,7 @@ name: "Terraform"
 on:
   push:
     branches:
-      - master
+      - nexilus/e2e-test
   pull_request:
     branches:
       - master
