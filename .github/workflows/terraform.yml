@@ -3,7 +3,7 @@ name: "Terraform"
 on:
   push:
     branches:
-      - nexilus/e2e-test
+      - master
   pull_request:
     branches:
       - master
@@ -34,44 +34,44 @@ jobs:
           TFVARS_CONTENT: ${{ secrets.BACKEND_TFVARS }}
           ENVIRONMENT: dev
 
-  # test-env:
-  #   name: "Test Enviornment"
-  #   runs-on: ubuntu-latest
-  #   needs: [dev-env]
-  #   environment: test
-  #   defaults:
-  #     run:
-  #       working-directory: ./deploy/terraform
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+  test-env:
+    name: "Test Enviornment"
+    runs-on: ubuntu-latest
+    needs: [dev-env]
+    environment: test
+    defaults:
+      run:
+        working-directory: ./deploy/terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  #     - name: Deploy Terraform Enviornment
-  #       uses: ./actions/deployTerraform
-  #       # uses: mhassaninmsft/SampleRepo1@v1
-  #       with:
-  #         who-to-greet: 'Mohamed'
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         TFVARS_CONTENT: ${{ secrets.BACKEND_TFVARS }}
-  #         ENVIRONMENT: test
+      - name: Deploy Terraform Enviornment
+        uses: ./actions/deployTerraform
+        # uses: mhassaninmsft/SampleRepo1@v1
+        with:
+          who-to-greet: 'Mohamed'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TFVARS_CONTENT: ${{ secrets.BACKEND_TFVARS }}
+          ENVIRONMENT: test
 
-  # prod-env:
-  #   name: "Prod Enviornment"
-  #   runs-on: ubuntu-latest
-  #   needs: [test-env]
-  #   environment: prod
-  #   defaults:
-  #     run:
-  #       working-directory: ./deploy/terraform
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+  prod-env:
+    name: "Prod Enviornment"
+    runs-on: ubuntu-latest
+    needs: [test-env]
+    environment: prod
+    defaults:
+      run:
+        working-directory: ./deploy/terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  #     - name: Deploy Terraform Enviornment
-  #       uses: ./actions/deployTerraform
-  #       # uses: mhassaninmsft/SampleRepo1@v1
-  #       with:
-  #         who-to-greet: 'Mohamed'
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         TFVARS_CONTENT: ${{ secrets.BACKEND_TFVARS }}
-  #         ENVIRONMENT: prod
+      - name: Deploy Terraform Enviornment
+        uses: ./actions/deployTerraform
+        # uses: mhassaninmsft/SampleRepo1@v1
+        with:
+          who-to-greet: 'Mohamed'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TFVARS_CONTENT: ${{ secrets.BACKEND_TFVARS }}
+          ENVIRONMENT: prod
