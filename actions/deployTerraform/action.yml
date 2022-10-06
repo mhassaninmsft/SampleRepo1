@@ -33,6 +33,9 @@ outputs:
   random-number:
     description: "Random number"
     value: ${{ steps.random-number-generator.outputs.random-number }}
+  function-name:
+    description: "Azure Function name"
+    value: ${{ steps.terraform-output.outputs.function-name }}
 runs:
   using: "composite"
   steps:
@@ -138,3 +141,13 @@ runs:
       working-directory: ./deploy/terraform
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply --var "environment=${{inputs.ENVIRONMENT}}" -auto-approve -input=false
+
+    - name: Terraform output
+      id: terraform-output
+      shell: bash
+      working-directory: ./deploy/terraform
+      # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: |
+        FUNCTION_NAME=$(terraform output function_name)
+        echo "::set-output name=function-name::$(echo $FUNCTION_NAME)"
+        echo "Function name is ${FUNCTION_NAME}"

@@ -25,8 +25,8 @@ namespace HelloWorld
             name = name ?? data?.name;
 
             string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response 12."
-                : $"Hello, {name}. This HTTP triggered function executed successfully 12.";
+                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response 13."
+                : $"Hello, {name}. This HTTP triggered function executed successfully 13.";
 
             return new OkObjectResult(responseMessage);
         }
