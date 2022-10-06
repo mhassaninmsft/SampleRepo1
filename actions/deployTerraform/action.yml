@@ -138,3 +138,28 @@ runs:
       working-directory: ./deploy/terraform
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply --var "environment=${{inputs.ENVIRONMENT}}" -auto-approve -input=false
+
+    - name: Install Go
+      uses: actions/setup-go@v3
+      with: 
+        go-version: "1.18.1"
+
+    - name: Init Go
+      working-directory: ./deploy/test
+      shell: bash
+      run: |
+        go mod init github.com/nexilus18/SampleRepo1/test
+        go install github.com/jstemmer/go-junit-report@latest
+
+    - name: Run Tests
+      working-directory: ./deploy/test/terraform
+      shell: bash
+      run: |
+        go get github.com/stretchr/testify/assert
+        go test -v test.go 2>&1 | go-junit-report > test.xml
+      
+    - uses: actions/upload-artifact@v3
+      if: success() || failure()
+      with:
+        name: Test results
+        path: ./deploy/test/terraform/*.xml
