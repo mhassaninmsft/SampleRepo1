@@ -6,7 +6,7 @@ resource "azurerm_service_plan" "servicePlan" {
   sku_name            = var.function_app_sku_size
 }
 
-resource "azurerm_windows_function_app" "dicomIngest" {
+resource "azurerm_windows_function_app" "azureFunction" {
   name                = "${local.name}-function-${random_string.suffix.result}"
   resource_group_name = azurerm_resource_group.main_resource_group.name
   location            = azurerm_resource_group.main_resource_group.location

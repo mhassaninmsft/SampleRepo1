@@ -27,4 +27,16 @@ This repo is a skeleton for you to start your project that uses Azure and Terraf
    ```text
 
 3. Add a secret in github secrets
-4. Create 3 enviornments
+4. Create 3 environments in github as described here
+5. For each environment add 2 secrets
+a.BACKEND_TFVARS which contains the backend configuration required for the app. An example Backend TFVARS file is shown below
+``` text
+storage_account_name = "mystorageaccount"
+container_name = "terraform"
+key = "local123.tfstate"
+resource_group_name = "rg_resources_name"
+subscription_id = "SUBSCRIPTION_ID"
+tenant_id = "TENANT_ID"
+
+```
+b. set the Azure function publish
