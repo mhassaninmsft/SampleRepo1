@@ -1,0 +1,46 @@
+name: "deploy-function"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+env:
+  AZURE_FUNCTIONAPP_NAME: hello-world  # set this to your application's name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './src/HelloWorld'    # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '6.0.401'              # set this to the dotnet version to use
+jobs:
+  dev-build-and-deploy:
+    strategy:
+      max-parallel: 1
+      matrix:
+        environment: [dev, test, prod]
+    runs-on: windows-latest
+    environment: ${{ matrix.environment }}
+    name: ${{ matrix.environment }}-build-and-deploy
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@master
+
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: 'Resolve Project Dependencies Using Dotnet'
+      shell: pwsh
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet build --configuration Release --output ./output
+        popd
+    # Only publish App if this is a merge
+    - name: 'Publish Azure Functions'
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      uses: Azure/functions-action@v1
+      id: pubAzureFunction
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        publish-profile: ${{ secrets.FUNCTION_PUBLISH_PROFILE }}
